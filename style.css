@@ -1,0 +1,243 @@
+/* General Resets */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    top: 0;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    padding: 2px 5px;
+    margin-top: 0.1rem;
+    z-index: 1000;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    page-break-inside: avoid;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 4px;
+    text-align: left;
+}
+
+/* Prevent table rows from breaking across pages */
+table, tr, td, th {
+  page-break-inside: avoid !important;
+}
+
+table.display {
+  width: 100% !important;
+  table-layout: fixed;
+  word-break: break-word;
+}
+
+/* Buttons */
+button {
+    background-color: #005bac;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #003e7e;
+}
+
+/* DataTable header */
+.display thead {
+    background-color: #086bc2;
+    color: white;
+}
+
+.datatable-container {
+  margin-top: 50px;
+}
+
+/* Layout */
+.sum-type {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 0.2rem;
+    padding: 0 10px;
+}
+
+.left-tables {
+    flex: 1;
+    max-width: 500px;
+    margin-left: 5px;
+}
+
+#summary table {
+    background-color: rgba(4, 184, 34, 0.486);
+}
+
+.nr-type th,
+.nr-type td {
+    padding: 1rem;
+}
+
+/* Charts */
+.right-charts {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chart-block {
+    text-align: center;
+}
+
+.chart-block canvas {
+    max-width: 200px;
+    max-height: 200px;
+    margin: auto;
+}
+
+/* Pie chart below */
+#charts {
+    width: 60%;
+    max-width: 200px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* Second Page */
+.second-page {
+    margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.second-page .col {
+    flex: 1;
+    min-width: 300px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.col th,
+.col td {
+    padding: 7spx;
+}
+
+#Monthly-Comparative-Analysis th,
+#Monthly-Comparative-Analysis td {
+    padding: 18px;
+}
+
+.full-width-table {
+    width: 90%;
+    margin: 40px auto;
+    text-align: left;
+    padding: 5px;
+}
+
+/* Download Button */
+.btn-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+#download-btn {
+    width: 200px;
+    padding: 10px;
+    border-radius: 25px;
+    font-size: 1rem;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .sum-type,
+    .second-page {
+        flex-direction: column;
+    }
+
+    .chart-block canvas,
+    #charts canvas {
+        max-width: 100% !important;
+    }
+
+    .left-tables,
+    .right-charts,
+    .col {
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    header h2,
+    header h3 {
+        font-size: 1rem;
+    }
+
+    table th,
+    table td {
+        font-size: 0.9rem;
+    }
+
+    .full-width-table {
+        width: 100%;
+    }
+}
+
+/* Force page breaks */
+.page-break {
+    page-break-after: always;
+}
+
+/* Prevent breaking inside tables or cards */
+.no-break {
+    page-break-inside: avoid;
+}
+
+.print-tr {
+  font-size: 10px;
+}
+
+/* Force PDF header visible & fixed */
+@media print {
+  .print-header {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    padding: 10px;
+    z-index: 1000;
+  }
+
+  body {
+    margin-top: 100px; /* Prevent content overlap */
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NR Portfolio Report</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div id="content">
+        <!-- Page 1 -->
+        <div class="page">
+            <header class="print-header">
+                <h2>NOT REPORTING PORTFOLIO MIS</h2>
+                <p>Client Name: JS Bank Limited</p>
+                <p>Issue Date: 12 Dec, 2018</p>
+            </header>
+
+            <div class="sum-type">
+                <div class="left-tables">
+                    <div id="summary">
+                        <table>
+                            <tr>
+                                <th>Reporting</th>
+                                <td>2061</td>
+                            </tr>
+                            <tr>
+                                <th>Not Reporting</th>
+                                <td>115</td>
+                            </tr>
+                            <tr>
+                                <th>Total Portfolio</th>
+                                <td>2176</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="nr-types">
+                        <table class="nr-type">
+                            <thead>
+                                <tr>
+                                    <th>NR Portfolio Type</th>
+                                    <th>Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1. NO CONTACT / NON-COOPERATIVE</td>
+                                    <td><button onclick="scrollToTable('datatable1')">30</button></td>
+                                </tr>
+                                <tr>
+                                    <td>2. LOW GSM/NON GSM AREA</td>
+                                    <td><button onclick="scrollToTable('datatable2')">2</button></td>
+                                </tr>
+                                <tr>
+                                    <td>3. PARKED FOR PROLONGED PERIOD</td>
+                                    <td><button onclick="scrollToTable('datatable3')">28</button></td>
+                                </tr>
+                                <tr>
+                                    <td>4. SCHEDULED FOR REDO</td>
+                                    <td><button onclick="scrollToTable('datatable4')">47</button></td>
+                                </tr>
+                                <tr>
+                                    <td>5. TOTAL LOSS / UNDER REPAIR</td>
+                                    <td><button onclick="scrollToTable('datatable5')">7</button></td>
+                                </tr>
+                                <tr>
+                                    <td>6. THIRD PARTY SOLD</td>
+                                    <td><button onclick="scrollToTable('datatable6')">1</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="right-charts">
+                    <div class="chart-block">
+                        <h3>NOT REPORTING PORTFOLIO %</h3>
+                        <canvas id="chart1"></canvas>
+                    </div>
+                    <div class="chart-block">
+                        <h3>NOT REPORTING PORTFOLIO due to ITecknologi %</h3>
+                        <canvas id="chart2"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="charts">
+                <h4>NR PORTFOLIO TYPE %</h4>
+                <canvas id="nrPortfolioChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Page Break -->
+        <div class="page-break"></div>
+
+        <!-- Page 2 -->
+        <div class="page second-page">
+            <div class="col">
+                <table id="Monthly-Comparative-Analysis">
+                    <thead>
+                        <tr>
+                            <th colspan="3">Monthly Comparative Analysis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Category</td>
+                            <td>30 Days Earlier</td>
+                            <td>Today</td>
+                        </tr>
+                        <tr>
+                            <td>Total Portfolio</td>
+                            <td>2076</td>
+                            <td>2176</td>
+                        </tr>
+                        <tr>
+                            <td>NR Count</td>
+                            <td>123</td>
+                            <td>115</td>
+                        </tr>
+                        <tr>
+                            <td>% of NR</td>
+                            <td>5.9%</td>
+                            <td>5.3%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="NR-Portfolio-30-Days-Earlier">
+                    <thead>
+                        <tr>
+                            <th colspan="2">NR Portfolio 30 Days Earlier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. NO CONTACT / NON-COOPERATIVE</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>2. LOW GSM/NON GSM AREA</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>3. PARKED FOR PROLONGED PERIOD</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>4. SCHEDULED FOR REDO</td>
+                            <td>47</td>
+                        </tr>
+                        <tr>
+                            <td>5. TOTAL LOSS / UNDER REPAIR</td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td>6. THIRD PARTY SOLD</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col">
+                <canvas id="barChart"></canvas>
+                <table id="NR-Portfolio-Today">
+                    <thead>
+                        <tr>
+                            <th colspan="2">NR Portfolio Today</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. NO CONTACT / NON-COOPERATIVE</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>2. LOW GSM/NON GSM AREA</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>3. PARKED FOR PROLONGED PERIOD</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td>4. SCHEDULED FOR REDO</td>
+                            <td>47</td>
+                        </tr>
+                        <tr>
+                            <td>5. TOTAL LOSS / UNDER REPAIR</td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td>6. THIRD PARTY SOLD</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="full-width-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <h3>Performance in Each Category of NR Past 1 Month</h3>
+                        </th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>NO CONTACT / NON-COOPERATIVE</td>
+                        <td>30</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>LOW GSM/NON GSM AREA</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>PARKED FOR PROLONGED PERIOD</td>
+                        <td>28</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>SCHEDULED FOR REDO</td>
+                        <td>47</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>TOTAL LOSS / UNDER REPAIR</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>THIRD PARTY SOLD</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Page Break -->
+        <div class="page-break"></div>
+
+        <!-- Page 3  -->
+        <!-- Datatable 1 -->
+        <div class="page no-break">
+            <div class="datatable-container">
+                <button>Home Page</button>
+                <table class="display" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Reg No.</th>
+                            <th>Primary Name</th>
+                            <th>Make</th>
+                            <th>Engine No</th>
+                            <th>Ch No.</th>
+                            <th>Model</th>
+                            <th>NR Date</th>
+                            <th>Aging</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="page-break"></div>
+
+        <!-- Datatable 2 -->
+        <div class="page no-break">
+            <div class="datatable-container">
+                <button>Home Page</button>
+                <table class="display" id="datatable2">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Reg No.</th>
+                            <th>Primary Name</th>
+                            <th>Make</th>
+                            <th>Engine No</th>
+                            <th>Ch No.</th>
+                            <th>Model</th>
+                            <th>NR Date</th>
+                            <th>Aging</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="page-break"></div>
+
+        <!-- Datatable 3 -->
+        <div class="datatable-container">
+            <button>Home Page</button>
+            <table class="display" id="datatable3">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Reg No.</th>
+                        <th>Primary Name</th>
+                        <th>Make</th>
+                        <th>Engine No</th>
+                        <th>Ch No.</th>
+                        <th>Model</th>
+                        <th>NR Date</th>
+                        <th>Aging</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="page-break"></div>
+        <!-- Datatable 4 -->
+        <div class="datatable-container">
+            <button>Home Page</button>
+            <table class="display" id="datatable4">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Reg No.</th>
+                        <th>Primary Name</th>
+                        <th>Make</th>
+                        <th>Engine No</th>
+                        <th>Ch No.</th>
+                        <th>Model</th>
+                        <th>NR Date</th>
+                        <th>Aging</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="page-break"></div>
+        <!-- Datatable 5 -->
+        <div class="datatable-container">
+            <button>Home Page</button>
+            <table class="display" id="datatable5">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Reg No.</th>
+                        <th>Primary Name</th>
+                        <th>Make</th>
+                        <th>Engine No</th>
+                        <th>Ch No.</th>
+                        <th>Model</th>
+                        <th>NR Date</th>
+                        <th>Aging</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="page-break"></div>
+        <!-- Datatable 6 -->
+        <div class="datatable-container">
+            <button>Home Page</button>
+            <table class="display" id="datatable6">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Reg No.</th>
+                        <th>Primary Name</th>
+                        <th>Make</th>
+                        <th>Engine No</th>
+                        <th>Ch No.</th>
+                        <th>Model</th>
+                        <th>NR Date</th>
+                        <th>Aging</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="page-break"></div>
+
+    </div>
+    <!-- Download Button -->
+    <div class="btn-download">
+        <button id="download-btn" onclick="generatePDF()">Download PDF</button>
+    </div>
+
+    <!-- JS Libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Main Logic -->
+    <script src="script.js"></script>
+</body>
+
+</html>

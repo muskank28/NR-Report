@@ -12,8 +12,9 @@ function formatDate(date) {
   return date.toLocaleDateString("en-GB");
 }
 
+// Generate table row entry
 function generateEntry(i, tableId = "") {
-  const reg = `BNP ${100 * parseInt(tableId.replace('datatable', '')) + i}`;
+  const reg = `BNP ${100 * parseInt(tableId.replace('table', '')) + i}`;
   const name = 'Ali';
   const make = "Honda Civic";
   const engine = `Q${100000 + i}`;
@@ -36,14 +37,15 @@ function generateEntry(i, tableId = "") {
         </tr>`;
 }
 
+// Populate mock table data
 function populateTables() {
   const mockData = {
-    datatable1: 30,
-    datatable2: 2,
-    datatable3: 28,
-    datatable4: 47,
-    datatable5: 7,
-    datatable6: 1
+    table1: 30,
+    table2: 2,
+    table3: 28,
+    table4: 40,
+    table5: 7,
+    table6: 1
   };
 
   Object.entries(mockData).forEach(([tableId, count]) => {
@@ -64,10 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
-  populateTables();
-});
-// Chart rendering
-document.addEventListener("DOMContentLoaded", () => {
+
   populateTables();
 
   const pieOptions = {
@@ -85,102 +84,92 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const chartConfigs = [
-
     {
-  id: 'chart1',
-  type: 'doughnut',
-  data: {
-    labels: ['Reporting', 'Not Reporting'],
-    datasets: [{
-      data: [2061, 115],
-      backgroundColor: ['#2196f3', '#9e9e9e'],
-      borderWidth: 0
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          color: '#fff',
-          font: {
-            size: 12,
-            weight: 'bold'
-          }
-        }
+      id: 'chart1',
+      type: 'doughnut',
+      data: {
+        labels: ['Reporting', 'Not Reporting'],
+        datasets: [{
+          data: [2061, 115],
+          backgroundColor: ['#2196f3', '#9e9e9e'],
+          borderWidth: 0
+        }]
       },
-      datalabels: {
-        color: '#fff',
-        font: {
-          size: 11,
-          weight: 'bold'
-        },
-        anchor: 'end',
-        align: 'end',
-        formatter: (value, context) => {
-          return value.toLocaleString(); // e.g. "3,224"
-        }
-      }
+      options: pieOptions
     },
-    layout: {
-      padding: 10
-    }
-  }
-},
-{
-  id: 'chart2',
-  type: 'doughnut',
-  data: {
-    labels: ['Configure', 'Total', 'Pending'],
-    datasets: [{
-      data: [3224, 159082, 65643],
-      backgroundColor: ['#00e676', '#2196f3', '#9e9e9e'],
-      borderWidth: 0
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          color: '#000',
-          font: {
-            size: 12,
-            weight: 'bold'
-          },
-          padding: 15
-        }
+    {
+      id: 'chart2',
+      type: 'doughnut',
+      data: {
+        labels: ['Configure', 'Total', 'Pending'],
+        datasets: [{
+          data: [3224, 159082, 65643],
+          backgroundColor: ['#00e676', '#2196f3', '#9e9e9e'],
+          borderWidth: 0
+        }]
       },
-      datalabels: {
-        color: '#000',
-        font: {
-          weight: 'bold',
-          size: 11
-        },
-        anchor: 'end',
-        align: 'end',
-        formatter: (value) => value.toLocaleString()  // e.g. 65,643
-      }
+      options: pieOptions
     },
-    layout: {
-      padding: 10
-    },
-    cutout: '60%' // creates the doughnut hole
-  }
-},
     {
       id: 'nrPortfolioChart',
       type: 'pie',
       data: {
-        datasets: [
-          {
-            data: [35, 2, 1, 8, 54],
-            backgroundColor: ['#f44336', '#ff9800', '#9c27b0', '#4caf50', '#3f51b5']
+        labels: [
+          'NO CONTACT / NON-COOPERATIVE',
+          'LOW GSM/NON GSM AREA',
+          'PARKED FOR PROLONGED PERIOD',
+          'SCHEDULED FOR REDO',
+          'TOTAL LOSS / UNDER REPAIR',
+          'THIRD PARTY SOLD'
+        ],
+        datasets: [{
+          data: [30, 2, 28, 7, 47, 1],
+          backgroundColor: [
+            '#8e24aa', '#43a047', '#fb8c00', '#1e88e5', '#f44336', '#6d4c41'
+          ],
+          borderColor: '#fff',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        layout: {
+          padding: 30
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+              const percent = ((value / total) * 100).toFixed(1);
+              return `${percent}%`;
+            },
+            color: '#000',
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            anchor: 'end',
+            align: 'start',
+            offset: -28,
+            backgroundColor: 'transparent',
+            borderWidth: 0,
+            callout: {
+              display: true,
+              borderColor: '#999',
+              borderWidth: 1,
+              side: 'bottom',
+              length: 15
+            },
+            clamp: true,
+            padding: 0,
+            clip: false
           }
-        ]
-      }
+        }
+      },
+      plugins: [ChartDataLabels]
     }
   ];
 
@@ -190,7 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
       new Chart(ctx, {
         type: config.type,
         data: config.data,
-        options: pieOptions
+        options: config.options,
+        plugins: config.plugins || [ChartDataLabels]
       });
     }
   });
@@ -220,28 +210,61 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Scroll to top for Home Page button
-document.querySelectorAll("button").forEach(btn => {
-  if (btn.textContent.includes("Home Page")) {
-    btn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-});
+// Generate PDF
+// function generatePDF() {
+//     document.body.classList.add('generate-pdf');
+//   const element = document.getElementById("content");
 
-// To generate PDF with proper page breaks
+//   const opt = {
+//     margin: [10, 10, 10, 10],
+//     filename: "NR-Portfolio-Report.pdf",
+//     image: { type: "jpeg", quality: 0.98 },
+//     html2canvas: {
+//       scale: 2,
+//       logging: true,
+//       useCORS: true,
+//       allowTaint: true,
+//       scrollY: 0,
+//       windowWidth: document.body.scrollWidth
+//     },
+//     jsPDF: {
+//       unit: "mm",
+//       format: "a4",
+//       orientation: "portrait"
+//     },
+//     pagebreak: {
+//       mode: ['avoid-all', 'css', 'legacy'],
+//       before: '.page-break-before',
+//       after: '.page-break-after',
+//       avoid: '.no-break'
+//     }
+//   };
+// html2pdf().set(opt).from(document.getElementById("content")).save().then(() => {
+//     document.body.classList.remove('generate-pdf');
+//   });
+//   html2pdf().set(opt).from(element).save();
+// }
+
 function generatePDF() {
-  const element = document.getElementById("content");
+  // Convert bar chart to image
+  const barCanvas = document.getElementById('barChart');
+  const barContainer = barCanvas?.parentElement;
+  let barImage;
 
-  // Expand all tables before PDF
-  const tables = document.querySelectorAll('.display');
-  tables.forEach(table => {
-    if ($.fn.DataTable.isDataTable(table)) {
-      const dt = $(table).DataTable();
-      dt.responsive.recalc(); // force expansion
-      dt.page.len(-1).draw(); // show all rows
-    }
-  });
+  if (barCanvas && barContainer) {
+    const imgData = barCanvas.toDataURL('image/png');
+    barImage = new Image();
+    barImage.src = imgData;
+    barImage.style.maxWidth = "100%";
+    barImage.style.display = "block";
+    barCanvas.style.display = "none";
+    barContainer.insertBefore(barImage, barCanvas);
+  }
+
+  // Add PDF styling class
+  document.body.classList.add('generate-pdf');
+
+  const element = document.getElementById("content");
 
   const opt = {
     margin: [10, 10, 10, 10],
@@ -268,14 +291,15 @@ function generatePDF() {
     }
   };
 
-  // Allow rendering to settle before download
-  setTimeout(() => {
-    html2pdf().set(opt).from(element).save().then(() => {
-      // Restore original pagination after export
-      tables.forEach(table => {
-        const dt = $(table).DataTable();
-        dt.page.len(25).draw(); // restore original page length
-      });
-    });
-  }, 1000); // wait for table redraw
+  // First PDF render pass
+  html2pdf().set(opt).from(document.getElementById("content")).save().then(() => {
+    // Restore original bar chart
+    if (barCanvas && barImage) {
+      barImage.remove();
+      barCanvas.style.display = "block";
+    }
+    document.body.classList.remove('generate-pdf');
+  });
+
+  // Second PDF render pass (as per your original logic)
 }

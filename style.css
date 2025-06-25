@@ -16,31 +16,46 @@ header {
     z-index: 1000;
 }
 
+#content {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
 /* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: 2px solid #ccc;
     page-break-inside: avoid;
+    table-layout: fixed;
+    word-wrap: break-word;
 }
 
 th,
 td {
     border: 1px solid #ccc;
-    padding: 4px;
-    text-align: left;
+    padding: 2px;
+    text-align: center;
+    font-size: 0.75rem;
 }
 
 /* Prevent table rows from breaking across pages */
-table, tr, td, th {
-  page-break-inside: avoid !important;
+table,
+thead,
+tbody,
+tr,
+th,
+td {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
 }
 
 table.display {
-  width: 100% !important;
-  table-layout: fixed;
-  word-break: break-word;
+    width: 100% !important;
+    table-layout: fixed;
+    word-break: break-word;
 }
 
 /* Buttons */
@@ -50,7 +65,7 @@ button {
     border: none;
     padding: 5px 10px;
     border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     cursor: pointer;
 }
 
@@ -58,14 +73,14 @@ button:hover {
     background-color: #003e7e;
 }
 
-/* DataTable header */
+/* Table header */
 .display thead {
     background-color: #086bc2;
     color: white;
 }
 
-.datatable-container {
-  margin-top: 50px;
+.table-container {
+    margin-top: 20px;
 }
 
 /* Layout */
@@ -86,6 +101,11 @@ button:hover {
 
 #summary table {
     background-color: rgba(4, 184, 34, 0.486);
+}
+
+#summary table th,
+#summary table td {
+    padding: 1.2rem;
 }
 
 .nr-type th,
@@ -114,16 +134,16 @@ button:hover {
 /* Pie chart below */
 #charts {
     width: 60%;
-    max-width: 200px;
+    max-width: 230px;
     margin: 20px auto;
     text-align: center;
 }
 
 /* Second Page */
 .second-page {
-    margin-top: 80px;
+    margin-top: 40px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 30px;
 }
 
@@ -136,19 +156,56 @@ button:hover {
 
 .col th,
 .col td {
-    padding: 7spx;
+    padding: 7px;
+}
+
+.col-group {
+    display: flex;
+    top: 0;
+    justify-content: space-between;
+    /* gap: 10px; */
+    flex-wrap: wrap;
+}
+
+.col {
+    flex: 1;
+    min-width: 300px;
+}
+
+.left-col table,
+.right-col table {
+    width: 100%;
+}
+
+#barChart {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 400px;
 }
 
 #Monthly-Comparative-Analysis th,
 #Monthly-Comparative-Analysis td {
-    padding: 18px;
+    padding: 12px;
+}
+
+#NR-Portfolio-30-Days-Earlier {
+    background-color: rgb(219, 219, 219);
+}
+
+#NR-Portfolio-Today {
+    background-color: rgb(219, 219, 219);
 }
 
 .full-width-table {
     width: 90%;
-    margin: 40px auto;
+    margin: 10px auto;
     text-align: left;
     padding: 5px;
+}
+
+.full-width-table th,
+td {
+    padding: 2px;
 }
 
 /* Download Button */
@@ -166,8 +223,28 @@ button:hover {
     font-size: 1rem;
 }
 
+#barChart {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100%;
+}
+
 /* Responsive Adjustments */
 @media screen and (max-width: 768px) {
+
+    header {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        border-bottom: 1px solid #ccc;
+        text-align: center;
+        padding: 10px;
+        z-index: 1000;
+    }
+
     .sum-type,
     .second-page {
         flex-direction: column;
@@ -192,7 +269,7 @@ button:hover {
 
     table th,
     table td {
-        font-size: 0.9rem;
+        font-size: 0.6rem;
     }
 
     .full-width-table {
@@ -211,33 +288,18 @@ button:hover {
 }
 
 .print-tr {
-  font-size: 10px;
+    font-size: 10px;
 }
 
-/* Force PDF header visible & fixed */
-@media print {
-  .print-header {
+.pdf-header-clone {
+    display: none;
+}
+
+.generate-pdf .pdf-header-clone {
     display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
     background: white;
-    border-bottom: 1px solid #ccc;
     text-align: center;
-    padding: 10px;
-    z-index: 1000;
-  }
-
-  body {
-    margin-top: 100px; /* Prevent content overlap */
-  }
-
-  thead {
-    display: table-header-group;
-  }
-
-  .no-print {
-    display: none !important;
-  }
+    padding: 8px;
+    margin-bottom: 2px;
+    /* page-break-before: always; */
 }

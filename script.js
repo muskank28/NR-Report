@@ -1,18 +1,18 @@
-// Register Data Labels plugin globally
+// Register Chart.js Data Labels plugin globally
 Chart.register(ChartDataLabels);
 
-// Utility: Scroll to table
+// Scroll to table
 function scrollToTable(id) {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Utility: Format date to DD/MM/YYYY
+// Format date
 function formatDate(date) {
   return date.toLocaleDateString("en-GB");
 }
 
-// Generate table row entry
+// Generate mock table entry
 function generateEntry(i, tableId = "") {
   const reg = `BNP ${100 * parseInt(tableId.replace('table', '')) + i}`;
   const name = 'Ali';
@@ -24,20 +24,20 @@ function generateEntry(i, tableId = "") {
   const aging = 28 - nrDate.getDate();
 
   return `
-        <tr>
-          <td>${i}</td>
-          <td>${reg}</td>
-          <td>${name}</td>
-          <td>${make}</td>
-          <td>${engine}</td>
-          <td>${chassis}</td>
-          <td>${model}</td>
-          <td>${formatDate(nrDate)}</td>
-          <td>${aging}</td>
-        </tr>`;
+    <tr>
+      <td>${i}</td>
+      <td>${reg}</td>
+      <td>${name}</td>
+      <td>${make}</td>
+      <td>${engine}</td>
+      <td>${chassis}</td>
+      <td>${model}</td>
+      <td>${formatDate(nrDate)}</td>
+      <td>${aging}</td>
+    </tr>`;
 }
 
-// Populate mock table data
+// Populate all tables with mock data
 function populateTables() {
   const mockData = {
     table1: 30,
@@ -54,19 +54,66 @@ function populateTables() {
     for (let i = 1; i <= count; i++) {
       rows += generateEntry(i, tableId);
     }
-    tbody.innerHTML = rows;
+    if (tbody) tbody.innerHTML = rows;
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll("button").forEach(btn => {
-    if (btn.textContent.includes("Home Page")) {
-      btn.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-  });
+// Replace chart canvas with image before exporting
+function replaceCanvasWithImage(canvas) {
+  const img = new Image();
+  img.src = canvas.toDataURL("image/png");
+  img.style.maxWidth = "100%";
+  img.style.display = "block";
+  const parent = canvas.parentElement;
+  canvas.style.display = "none";
+  parent.insertBefore(img, canvas);
+  return img;
+}
 
+// Generate PDF and handle chart replacement
+function generatePDF() {
+  const barCanvas = document.getElementById('barChart');
+  const barImage = barCanvas ? replaceCanvasWithImage(barCanvas) : null;
+
+  document.body.classList.add('generate-pdf');
+
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: "NR-Portfolio-Report.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: {
+      scale: 2,
+      logging: false,
+      useCORS: true,
+      allowTaint: true,
+      scrollY: 0,
+      windowWidth: document.body.scrollWidth
+    },
+    jsPDF: {
+      unit: "mm",
+      format: "a4",
+      orientation: "portrait"
+    },
+    pagebreak: {
+      mode: ['avoid-all', 'css', 'legacy'],
+      before: '.page-break-before',
+      after: '.page-break-after',
+      avoid: '.no-break'
+    }
+  };
+
+  html2pdf().set(opt).from(document.getElementById("content")).save().then(() => {
+    if (barCanvas && barImage) {
+      barImage.remove();
+      barCanvas.style.display = "block";
+    }
+    document.body.classList.remove('generate-pdf');
+  });
+}
+
+// DOM Ready: initialize everything
+
+document.addEventListener('DOMContentLoaded', () => {
   populateTables();
 
   const pieOptions = {
@@ -86,12 +133,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const chartConfigs = [
     {
       id: 'chart1',
-      type: 'doughnut',
+      type: 'pie',
       data: {
         labels: ['Reporting', 'Not Reporting'],
         datasets: [{
           data: [2061, 115],
-          backgroundColor: ['#2196f3', '#9e9e9e'],
+          backgroundColor: ['#5087bb', '#95b7df'],
           borderWidth: 0
         }]
       },
@@ -99,12 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'chart2',
-      type: 'doughnut',
+      type: 'pie',
       data: {
-        labels: ['Configure', 'Total', 'Pending'],
         datasets: [{
-          data: [3224, 159082, 65643],
-          backgroundColor: ['#00e676', '#2196f3', '#9e9e9e'],
+          data: [3224, 159082],
+          backgroundColor: ['#3c66b1', '#a3a3a3'],
           borderWidth: 0
         }]
       },
@@ -117,45 +163,35 @@ document.addEventListener('DOMContentLoaded', () => {
         labels: [
           'NO CONTACT / NON-COOPERATIVE',
           'LOW GSM/NON GSM AREA',
-          'PARKED FOR PROLONGED PERIOD',
           'SCHEDULED FOR REDO',
           'TOTAL LOSS / UNDER REPAIR',
           'THIRD PARTY SOLD'
         ],
         datasets: [{
-          data: [30, 2, 28, 7, 47, 1],
+          data: [35, 2, 54, 8, 1],
           backgroundColor: [
-            '#8e24aa', '#43a047', '#fb8c00', '#1e88e5', '#f44336', '#6d4c41'
+            '#ed7d31', '#ffc000', '#70ad47', '#9e480e', '#997300'
           ],
           borderColor: '#fff',
-          borderWidth: 1
+          borderWidth: 2
         }]
       },
       options: {
         responsive: true,
-        layout: {
-          padding: 30
-        },
+        layout: { padding: 30 },
         plugins: {
-          legend: {
-            display: false
-          },
+          legend: { display: false },
           datalabels: {
             formatter: (value, context) => {
               const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-              const percent = ((value / total) * 100).toFixed(1);
-              return `${percent}%`;
+              return ((value / total) * 100).toFixed(1) + '%';
             },
             color: '#000',
-            font: {
-              size: 12,
-              weight: 'bold'
-            },
+            font: { size: 12, weight: 'bold' },
             anchor: 'end',
             align: 'start',
             offset: -28,
             backgroundColor: 'transparent',
-            borderWidth: 0,
             callout: {
               display: true,
               borderColor: '#999',
@@ -192,114 +228,39 @@ document.addEventListener('DOMContentLoaded', () => {
       data: {
         labels: ['30 Days Earlier', 'Today'],
         datasets: [
-          { label: 'Total Portfolio', data: [2076, 2176], backgroundColor: '#2196f3' },
-          { label: 'NR Count', data: [123, 115], backgroundColor: '#f44336' }
+          {
+            label: 'Total Portfolio',
+            data: [2076, 2176],
+            backgroundColor: '#3a6cc6'
+          },
+          {
+            label: 'NR Count',
+            data: [123, 115],
+            backgroundColor: '#ee7420'
+          }
         ]
       },
       options: {
         responsive: true,
         plugins: {
-          legend: { position: 'top' },
-          title: { display: true, text: 'NR Monthly Comparative Analysis' }
+          legend: { position: 'bottom' },
+          title: { display: true, text: 'NR Monthly Comparative Analysis' },
+          datalabels: {
+            anchor: 'end',
+            align: 'start',
+            offset: -22,
+            color: '#44546a',
+            font: { size: 10, weight: 'bold' }
+          }
         },
-        scales: {
-          y: { beginAtZero: true }
-        }
-      }
+        scales: { y: { beginAtZero: true } }
+      },
+      plugins: [ChartDataLabels]
     });
   }
+
+  // Auto-download after delay
+  setTimeout(() => {
+    generatePDF();
+  }, 1000);
 });
-
-// Generate PDF
-// function generatePDF() {
-//     document.body.classList.add('generate-pdf');
-//   const element = document.getElementById("content");
-
-//   const opt = {
-//     margin: [10, 10, 10, 10],
-//     filename: "NR-Portfolio-Report.pdf",
-//     image: { type: "jpeg", quality: 0.98 },
-//     html2canvas: {
-//       scale: 2,
-//       logging: true,
-//       useCORS: true,
-//       allowTaint: true,
-//       scrollY: 0,
-//       windowWidth: document.body.scrollWidth
-//     },
-//     jsPDF: {
-//       unit: "mm",
-//       format: "a4",
-//       orientation: "portrait"
-//     },
-//     pagebreak: {
-//       mode: ['avoid-all', 'css', 'legacy'],
-//       before: '.page-break-before',
-//       after: '.page-break-after',
-//       avoid: '.no-break'
-//     }
-//   };
-// html2pdf().set(opt).from(document.getElementById("content")).save().then(() => {
-//     document.body.classList.remove('generate-pdf');
-//   });
-//   html2pdf().set(opt).from(element).save();
-// }
-
-function generatePDF() {
-  // Convert bar chart to image
-  const barCanvas = document.getElementById('barChart');
-  const barContainer = barCanvas?.parentElement;
-  let barImage;
-
-  if (barCanvas && barContainer) {
-    const imgData = barCanvas.toDataURL('image/png');
-    barImage = new Image();
-    barImage.src = imgData;
-    barImage.style.maxWidth = "100%";
-    barImage.style.display = "block";
-    barCanvas.style.display = "none";
-    barContainer.insertBefore(barImage, barCanvas);
-  }
-
-  // Add PDF styling class
-  document.body.classList.add('generate-pdf');
-
-  const element = document.getElementById("content");
-
-  const opt = {
-    margin: [10, 10, 10, 10],
-    filename: "NR-Portfolio-Report.pdf",
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: {
-      scale: 2,
-      logging: true,
-      useCORS: true,
-      allowTaint: true,
-      scrollY: 0,
-      windowWidth: document.body.scrollWidth
-    },
-    jsPDF: {
-      unit: "mm",
-      format: "a4",
-      orientation: "portrait"
-    },
-    pagebreak: {
-      mode: ['avoid-all', 'css', 'legacy'],
-      before: '.page-break-before',
-      after: '.page-break-after',
-      avoid: '.no-break'
-    }
-  };
-
-  // First PDF render pass
-  html2pdf().set(opt).from(document.getElementById("content")).save().then(() => {
-    // Restore original bar chart
-    if (barCanvas && barImage) {
-      barImage.remove();
-      barCanvas.style.display = "block";
-    }
-    document.body.classList.remove('generate-pdf');
-  });
-
-  // Second PDF render pass (as per your original logic)
-}
